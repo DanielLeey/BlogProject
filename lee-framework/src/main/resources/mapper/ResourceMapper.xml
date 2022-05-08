@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.lee.dao.ResourceMapper">
+    <select id="listByUserId" resultType="com.lee.domain.entity.Resource">
+        SELECT
+            sr.*
+        FROM
+            sys_user su
+            LEFT JOIN sys_user_role_relation sur ON su.id = sur.user_id
+            LEFT JOIN sys_role_resource_relation srr ON sur.role_id = srr.role_id
+            LEFT JOIN sys_resource sr ON srr.role_id = sr.id
+        WHERE
+            su.id = #{id}
+            AND sr.id IS NOT NULL
+        GROUP BY
+            sr.id
+    </select>
+</mapper>

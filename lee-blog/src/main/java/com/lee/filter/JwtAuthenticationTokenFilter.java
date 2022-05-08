@@ -4,11 +4,13 @@ import com.alibaba.fastjson.JSON;
 import com.lee.domain.ResponseResult;
 import com.lee.domain.entity.LoginUserDetails;
 import com.lee.enums.AppHttpCodeEnum;
+import com.lee.utils.JwtTokenUtil;
 import com.lee.utils.JwtUtil;
 import com.lee.utils.RedisCache;
 import com.lee.utils.WebUtils;
 import io.jsonwebtoken.Claims;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
@@ -24,25 +26,51 @@ import java.util.Objects;
 /**
  * 认证过滤器，过滤请求，如果是带着token需要解析，不带token放行
  */
-@Component
 public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
+
+    @Value("${jwt.tokenHeader}")
+    private String tokenHeader;
+
+    @Value("${jwt.tokenHead}")
+    private String tokenHead;
 
     @Autowired
     private RedisCache redisCache;
 
+    @Autowired
+    private JwtTokenUtil jwtTokenUtil;
+
     @Override
     protected void doFilterInternal(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, FilterChain filterChain) throws ServletException, IOException {
         // 从请求头中获取token
-        String token = httpServletRequest.getHeader("token");
-        //如果为空则放行
-        if (Objects.isNull(token)) {
+        String authHeader = httpServletRequest.getHeader("Authorization");
+        //如果请求头中带有Authorization不为空，则解析token，否则放行
+        if (Objects.nonNull(authHeader) && authHeader.startsWith(this.tokenHead)) {
+            String authToken = authHeader.substring(this.tokenHead.length());// The part after "Bearer "
+            //解析token中的用户名，取出redis中存的UserDetails，并校验token和redis中是否一致，token是否过期
+            //1.解析token中的用户名
+            String userNameFromToken = jwtTokenUtil.getUserNameFromToken(authToken);
+            //2.获取redis中的UserDetails
+            LoginUserDetails loginUserDetails = (LoginUserDetails) redisCache.getCacheObject("bloglogin:" + userNameFromToken);
+            //3.校验token和redis中是否一致，token是否过期
+            if (jwtTokenUtil.validateToken(authToken, loginUserDetails)) {
+                //没有过期 存入SecurityContextHolder 权限暂时为null
+                UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(loginUserDetails, null, loginUserDetails.getAuthorities());
+                SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+            }
+        }
+        filterChain.doFilter(httpServletRequest, httpServletResponse);
+    }
+ /*       //如果为空则放行
+        if (Objects.isNull(authHeader)) {
             filterChain.doFilter(httpServletRequest, httpServletResponse);
             return;
         }
+        String authToken = authHeader.substring(this.tokenHead.length());// The part after "Bearer "
         //不为空则解析
         Claims claims = null;
         try {
-            claims = JwtUtil.parseJWT(token);
+            claims = JwtUtil.parseJWT(authToken);
         } catch (Exception e) {
             //如果解析失败，则可能token过期 或是无效， 需要重新登录
             //过滤器中异常不会被全局异常拦截器拦截，需要特殊处理
@@ -64,5 +92,5 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(loginUserDetails, null, null);
         SecurityContextHolder.getContext().setAuthentication(authenticationToken);
         filterChain.doFilter(httpServletRequest, httpServletResponse);
-    }
+    }*/
 }

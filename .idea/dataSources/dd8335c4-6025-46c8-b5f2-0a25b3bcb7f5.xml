@@ -1123,318 +1123,483 @@
     <table id="282" parent="5" name="sg_link">
       <Comment>友链</Comment>
     </table>
-    <table id="283" parent="5" name="sys_user">
+    <table id="283" parent="5" name="sys_resource">
+      <Comment>后台资源表</Comment>
+      <Collation>utf8_general_ci</Collation>
+    </table>
+    <table id="284" parent="5" name="sys_resource_category">
+      <Comment>资源分类表</Comment>
+      <Collation>utf8_general_ci</Collation>
+    </table>
+    <table id="285" parent="5" name="sys_role">
+      <Comment>后台用户角色表</Comment>
+      <Collation>utf8_general_ci</Collation>
+    </table>
+    <table id="286" parent="5" name="sys_role_resource_relation">
+      <Comment>后台角色资源关系表</Comment>
+      <Collation>utf8_general_ci</Collation>
+    </table>
+    <table id="287" parent="5" name="sys_user">
       <Comment>用户表</Comment>
     </table>
-    <column id="284" parent="279" name="id">
+    <table id="288" parent="5" name="sys_user_role_relation">
+      <Comment>后台用户和角色关系表</Comment>
+      <Collation>utf8_general_ci</Collation>
+    </table>
+    <column id="289" parent="279" name="id">
       <Position>1</Position>
       <DataType>bigint|0s</DataType>
       <NotNull>1</NotNull>
       <SequenceIdentity>1</SequenceIdentity>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="285" parent="279" name="title">
+    <column id="290" parent="279" name="title">
       <Position>2</Position>
       <Comment>标题</Comment>
       <DataType>varchar(256)|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="286" parent="279" name="content">
+    <column id="291" parent="279" name="content">
       <Position>3</Position>
       <Comment>文章内容</Comment>
       <DataType>longtext|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="287" parent="279" name="summary">
+    <column id="292" parent="279" name="summary">
       <Position>4</Position>
       <Comment>文章摘要</Comment>
       <DataType>varchar(1024)|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="288" parent="279" name="category_id">
+    <column id="293" parent="279" name="category_id">
       <Position>5</Position>
       <Comment>所属分类id</Comment>
       <DataType>bigint|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="289" parent="279" name="thumbnail">
+    <column id="294" parent="279" name="thumbnail">
       <Position>6</Position>
       <Comment>缩略图</Comment>
       <DataType>varchar(256)|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="290" parent="279" name="is_top">
+    <column id="295" parent="279" name="is_top">
       <Position>7</Position>
       <Comment>是否置顶（0否，1是）</Comment>
       <DataType>char(1)|0s</DataType>
       <DefaultExpression>&apos;0&apos;</DefaultExpression>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="291" parent="279" name="status">
+    <column id="296" parent="279" name="status">
       <Position>8</Position>
       <Comment>状态（0已发布，1草稿）</Comment>
       <DataType>char(1)|0s</DataType>
       <DefaultExpression>&apos;1&apos;</DefaultExpression>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="292" parent="279" name="view_count">
+    <column id="297" parent="279" name="view_count">
       <Position>9</Position>
       <Comment>访问量</Comment>
       <DataType>bigint|0s</DataType>
       <DefaultExpression>0</DefaultExpression>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="293" parent="279" name="is_comment">
+    <column id="298" parent="279" name="is_comment">
       <Position>10</Position>
       <Comment>是否允许评论 1是，0否</Comment>
       <DataType>char(1)|0s</DataType>
       <DefaultExpression>&apos;1&apos;</DefaultExpression>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="294" parent="279" name="create_by">
+    <column id="299" parent="279" name="create_by">
       <Position>11</Position>
       <DataType>bigint|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="295" parent="279" name="create_time">
+    <column id="300" parent="279" name="create_time">
       <Position>12</Position>
       <DataType>datetime|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="296" parent="279" name="update_by">
+    <column id="301" parent="279" name="update_by">
       <Position>13</Position>
       <DataType>bigint|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="297" parent="279" name="update_time">
+    <column id="302" parent="279" name="update_time">
       <Position>14</Position>
       <DataType>datetime|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="298" parent="279" name="del_flag">
+    <column id="303" parent="279" name="del_flag">
       <Position>15</Position>
       <Comment>删除标志（0代表未删除，1代表已删除）</Comment>
       <DataType>int|0s</DataType>
       <DefaultExpression>0</DefaultExpression>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <key id="299" parent="279" name="PRIMARY">
+    <key id="304" parent="279" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>id</ColNames>
       <Primary>1</Primary>
     </key>
-    <column id="300" parent="280" name="id">
+    <column id="305" parent="280" name="id">
       <Position>1</Position>
       <DataType>bigint|0s</DataType>
       <NotNull>1</NotNull>
       <SequenceIdentity>1</SequenceIdentity>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="301" parent="280" name="name">
+    <column id="306" parent="280" name="name">
       <Position>2</Position>
       <Comment>分类名</Comment>
       <DataType>varchar(128)|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="302" parent="280" name="pid">
+    <column id="307" parent="280" name="pid">
       <Position>3</Position>
       <Comment>父分类id，如果没有父分类为-1</Comment>
       <DataType>bigint|0s</DataType>
       <DefaultExpression>-1</DefaultExpression>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="303" parent="280" name="description">
+    <column id="308" parent="280" name="description">
       <Position>4</Position>
       <Comment>描述</Comment>
       <DataType>varchar(512)|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="304" parent="280" name="status">
+    <column id="309" parent="280" name="status">
       <Position>5</Position>
       <Comment>状态0:正常,1禁用</Comment>
       <DataType>char(1)|0s</DataType>
       <DefaultExpression>&apos;0&apos;</DefaultExpression>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="305" parent="280" name="create_by">
+    <column id="310" parent="280" name="create_by">
       <Position>6</Position>
       <DataType>bigint|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="306" parent="280" name="create_time">
+    <column id="311" parent="280" name="create_time">
       <Position>7</Position>
       <DataType>datetime|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="307" parent="280" name="update_by">
+    <column id="312" parent="280" name="update_by">
       <Position>8</Position>
       <DataType>bigint|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="308" parent="280" name="update_time">
+    <column id="313" parent="280" name="update_time">
       <Position>9</Position>
       <DataType>datetime|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="309" parent="280" name="del_flag">
+    <column id="314" parent="280" name="del_flag">
       <Position>10</Position>
       <Comment>删除标志（0代表未删除，1代表已删除）</Comment>
       <DataType>int|0s</DataType>
       <DefaultExpression>0</DefaultExpression>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <key id="310" parent="280" name="PRIMARY">
+    <key id="315" parent="280" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>id</ColNames>
       <Primary>1</Primary>
     </key>
-    <column id="311" parent="281" name="id">
+    <column id="316" parent="281" name="id">
       <Position>1</Position>
       <DataType>bigint|0s</DataType>
       <NotNull>1</NotNull>
       <SequenceIdentity>1</SequenceIdentity>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="312" parent="281" name="type">
+    <column id="317" parent="281" name="type">
       <Position>2</Position>
       <Comment>评论类型（0代表文章评论，1代表友链评论）</Comment>
       <DataType>char(1)|0s</DataType>
       <DefaultExpression>&apos;0&apos;</DefaultExpression>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="313" parent="281" name="article_id">
+    <column id="318" parent="281" name="article_id">
       <Position>3</Position>
       <Comment>文章id</Comment>
       <DataType>bigint|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="314" parent="281" name="root_id">
+    <column id="319" parent="281" name="root_id">
       <Position>4</Position>
       <Comment>根评论id</Comment>
       <DataType>bigint|0s</DataType>
       <DefaultExpression>-1</DefaultExpression>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="315" parent="281" name="content">
+    <column id="320" parent="281" name="content">
       <Position>5</Position>
       <Comment>评论内容</Comment>
       <DataType>varchar(512)|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="316" parent="281" name="to_comment_user_id">
+    <column id="321" parent="281" name="to_comment_user_id">
       <Position>6</Position>
       <Comment>所回复的目标评论的userid</Comment>
       <DataType>bigint|0s</DataType>
       <DefaultExpression>-1</DefaultExpression>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="317" parent="281" name="to_comment_id">
+    <column id="322" parent="281" name="to_comment_id">
       <Position>7</Position>
       <Comment>回复目标评论id</Comment>
       <DataType>bigint|0s</DataType>
       <DefaultExpression>-1</DefaultExpression>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="318" parent="281" name="create_by">
+    <column id="323" parent="281" name="create_by">
       <Position>8</Position>
       <DataType>bigint|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="319" parent="281" name="create_time">
+    <column id="324" parent="281" name="create_time">
       <Position>9</Position>
       <DataType>datetime|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="320" parent="281" name="update_by">
+    <column id="325" parent="281" name="update_by">
       <Position>10</Position>
       <DataType>bigint|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="321" parent="281" name="update_time">
+    <column id="326" parent="281" name="update_time">
       <Position>11</Position>
       <DataType>datetime|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="322" parent="281" name="del_flag">
+    <column id="327" parent="281" name="del_flag">
       <Position>12</Position>
       <Comment>删除标志（0代表未删除，1代表已删除）</Comment>
       <DataType>int|0s</DataType>
       <DefaultExpression>0</DefaultExpression>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <key id="323" parent="281" name="PRIMARY">
+    <key id="328" parent="281" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>id</ColNames>
       <Primary>1</Primary>
     </key>
-    <column id="324" parent="282" name="id">
+    <column id="329" parent="282" name="id">
       <Position>1</Position>
       <DataType>bigint|0s</DataType>
       <NotNull>1</NotNull>
       <SequenceIdentity>1</SequenceIdentity>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="325" parent="282" name="name">
+    <column id="330" parent="282" name="name">
       <Position>2</Position>
       <DataType>varchar(256)|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="326" parent="282" name="logo">
+    <column id="331" parent="282" name="logo">
       <Position>3</Position>
       <DataType>varchar(256)|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="327" parent="282" name="description">
+    <column id="332" parent="282" name="description">
       <Position>4</Position>
       <DataType>varchar(512)|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="328" parent="282" name="address">
+    <column id="333" parent="282" name="address">
       <Position>5</Position>
       <Comment>网站地址</Comment>
       <DataType>varchar(128)|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="329" parent="282" name="status">
+    <column id="334" parent="282" name="status">
       <Position>6</Position>
       <Comment>审核状态 (0代表审核通过，1代表审核未通过，2代表未审核)</Comment>
       <DataType>char(1)|0s</DataType>
       <DefaultExpression>&apos;2&apos;</DefaultExpression>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="330" parent="282" name="create_by">
+    <column id="335" parent="282" name="create_by">
       <Position>7</Position>
       <DataType>bigint|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="331" parent="282" name="create_time">
+    <column id="336" parent="282" name="create_time">
       <Position>8</Position>
       <DataType>datetime|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="332" parent="282" name="update_by">
+    <column id="337" parent="282" name="update_by">
       <Position>9</Position>
       <DataType>bigint|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="333" parent="282" name="update_time">
+    <column id="338" parent="282" name="update_time">
       <Position>10</Position>
       <DataType>datetime|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="334" parent="282" name="del_flag">
+    <column id="339" parent="282" name="del_flag">
       <Position>11</Position>
       <Comment>删除标志（0代表未删除，1代表已删除）</Comment>
       <DataType>int|0s</DataType>
       <DefaultExpression>0</DefaultExpression>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <key id="335" parent="282" name="PRIMARY">
+    <key id="340" parent="282" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>id</ColNames>
       <Primary>1</Primary>
     </key>
-    <column id="336" parent="283" name="id">
+    <column id="341" parent="283" name="id">
+      <Position>1</Position>
+      <DataType>bigint|0s</DataType>
+      <NotNull>1</NotNull>
+      <SequenceIdentity>1</SequenceIdentity>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <column id="342" parent="283" name="create_time">
+      <Position>2</Position>
+      <Comment>创建时间</Comment>
+      <DataType>datetime|0s</DataType>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <column id="343" parent="283" name="name">
+      <Position>3</Position>
+      <Comment>资源名称</Comment>
+      <DataType>varchar(200)|0s</DataType>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <column id="344" parent="283" name="url">
+      <Position>4</Position>
+      <Comment>资源URL</Comment>
+      <DataType>varchar(200)|0s</DataType>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <column id="345" parent="283" name="description">
+      <Position>5</Position>
+      <Comment>描述</Comment>
+      <DataType>varchar(500)|0s</DataType>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <column id="346" parent="283" name="category_id">
+      <Position>6</Position>
+      <Comment>资源分类ID</Comment>
+      <DataType>bigint|0s</DataType>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <key id="347" parent="283" name="PRIMARY">
+      <NameSurrogate>1</NameSurrogate>
+      <ColNames>id</ColNames>
+      <Primary>1</Primary>
+    </key>
+    <column id="348" parent="284" name="id">
+      <Position>1</Position>
+      <DataType>bigint|0s</DataType>
+      <NotNull>1</NotNull>
+      <SequenceIdentity>1</SequenceIdentity>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <column id="349" parent="284" name="create_time">
+      <Position>2</Position>
+      <Comment>创建时间</Comment>
+      <DataType>datetime|0s</DataType>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <column id="350" parent="284" name="name">
+      <Position>3</Position>
+      <Comment>分类名称</Comment>
+      <DataType>varchar(200)|0s</DataType>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <column id="351" parent="284" name="sort">
+      <Position>4</Position>
+      <Comment>排序</Comment>
+      <DataType>int|0s</DataType>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <key id="352" parent="284" name="PRIMARY">
+      <NameSurrogate>1</NameSurrogate>
+      <ColNames>id</ColNames>
+      <Primary>1</Primary>
+    </key>
+    <column id="353" parent="285" name="id">
+      <Position>1</Position>
+      <DataType>bigint|0s</DataType>
+      <NotNull>1</NotNull>
+      <SequenceIdentity>1</SequenceIdentity>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <column id="354" parent="285" name="name">
+      <Position>2</Position>
+      <Comment>名称</Comment>
+      <DataType>varchar(100)|0s</DataType>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <column id="355" parent="285" name="description">
+      <Position>3</Position>
+      <Comment>描述</Comment>
+      <DataType>varchar(500)|0s</DataType>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <column id="356" parent="285" name="user_count">
+      <Position>4</Position>
+      <Comment>后台用户数量</Comment>
+      <DataType>int|0s</DataType>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <column id="357" parent="285" name="create_time">
+      <Position>5</Position>
+      <Comment>创建时间</Comment>
+      <DataType>datetime|0s</DataType>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <column id="358" parent="285" name="status">
+      <Position>6</Position>
+      <Comment>启用状态：0-&gt;禁用；1-&gt;启用</Comment>
+      <DataType>int|0s</DataType>
+      <DefaultExpression>1</DefaultExpression>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <column id="359" parent="285" name="sort">
+      <Position>7</Position>
+      <DataType>int|0s</DataType>
+      <DefaultExpression>0</DefaultExpression>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <key id="360" parent="285" name="PRIMARY">
+      <NameSurrogate>1</NameSurrogate>
+      <ColNames>id</ColNames>
+      <Primary>1</Primary>
+    </key>
+    <column id="361" parent="286" name="id">
+      <Position>1</Position>
+      <DataType>bigint|0s</DataType>
+      <NotNull>1</NotNull>
+      <SequenceIdentity>1</SequenceIdentity>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <column id="362" parent="286" name="role_id">
+      <Position>2</Position>
+      <Comment>角色ID</Comment>
+      <DataType>bigint|0s</DataType>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <column id="363" parent="286" name="resource_id">
+      <Position>3</Position>
+      <Comment>资源ID</Comment>
+      <DataType>bigint|0s</DataType>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <key id="364" parent="286" name="PRIMARY">
+      <NameSurrogate>1</NameSurrogate>
+      <ColNames>id</ColNames>
+      <Primary>1</Primary>
+    </key>
+    <column id="365" parent="287" name="id">
       <Position>1</Position>
       <Comment>主键</Comment>
       <DataType>bigint|0s</DataType>
@@ -1442,7 +1607,7 @@
       <SequenceIdentity>1</SequenceIdentity>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="337" parent="283" name="user_name">
+    <column id="366" parent="287" name="user_name">
       <Position>2</Position>
       <Comment>用户名</Comment>
       <DataType>varchar(64)|0s</DataType>
@@ -1450,7 +1615,7 @@
       <DefaultExpression>&apos;NULL&apos;</DefaultExpression>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="338" parent="283" name="nick_name">
+    <column id="367" parent="287" name="nick_name">
       <Position>3</Position>
       <Comment>昵称</Comment>
       <DataType>varchar(64)|0s</DataType>
@@ -1458,7 +1623,7 @@
       <DefaultExpression>&apos;NULL&apos;</DefaultExpression>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="339" parent="283" name="password">
+    <column id="368" parent="287" name="password">
       <Position>4</Position>
       <Comment>密码</Comment>
       <DataType>varchar(64)|0s</DataType>
@@ -1466,76 +1631,98 @@
       <DefaultExpression>&apos;NULL&apos;</DefaultExpression>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="340" parent="283" name="type">
+    <column id="369" parent="287" name="type">
       <Position>5</Position>
       <Comment>用户类型：0代表普通用户，1代表管理员</Comment>
       <DataType>char(1)|0s</DataType>
       <DefaultExpression>&apos;0&apos;</DefaultExpression>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="341" parent="283" name="status">
+    <column id="370" parent="287" name="status">
       <Position>6</Position>
       <Comment>账号状态（0正常 1停用）</Comment>
       <DataType>char(1)|0s</DataType>
       <DefaultExpression>&apos;0&apos;</DefaultExpression>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="342" parent="283" name="email">
+    <column id="371" parent="287" name="email">
       <Position>7</Position>
       <Comment>邮箱</Comment>
       <DataType>varchar(64)|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="343" parent="283" name="phonenumber">
+    <column id="372" parent="287" name="phonenumber">
       <Position>8</Position>
       <Comment>手机号</Comment>
       <DataType>varchar(32)|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="344" parent="283" name="sex">
+    <column id="373" parent="287" name="sex">
       <Position>9</Position>
       <Comment>用户性别（0男，1女，2未知）</Comment>
       <DataType>char(1)|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="345" parent="283" name="avatar">
+    <column id="374" parent="287" name="avatar">
       <Position>10</Position>
       <Comment>头像</Comment>
       <DataType>varchar(128)|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="346" parent="283" name="create_by">
+    <column id="375" parent="287" name="create_by">
       <Position>11</Position>
       <Comment>创建人的用户id</Comment>
       <DataType>bigint|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="347" parent="283" name="create_time">
+    <column id="376" parent="287" name="create_time">
       <Position>12</Position>
       <Comment>创建时间</Comment>
       <DataType>datetime|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="348" parent="283" name="update_by">
+    <column id="377" parent="287" name="update_by">
       <Position>13</Position>
       <Comment>更新人</Comment>
       <DataType>bigint|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="349" parent="283" name="update_time">
+    <column id="378" parent="287" name="update_time">
       <Position>14</Position>
       <Comment>更新时间</Comment>
       <DataType>datetime|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="350" parent="283" name="del_flag">
+    <column id="379" parent="287" name="del_flag">
       <Position>15</Position>
       <Comment>删除标志（0代表未删除，1代表已删除）</Comment>
       <DataType>int|0s</DataType>
       <DefaultExpression>0</DefaultExpression>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <key id="351" parent="283" name="PRIMARY">
+    <key id="380" parent="287" name="PRIMARY">
+      <NameSurrogate>1</NameSurrogate>
+      <ColNames>id</ColNames>
+      <Primary>1</Primary>
+    </key>
+    <column id="381" parent="288" name="id">
+      <Position>1</Position>
+      <DataType>bigint|0s</DataType>
+      <NotNull>1</NotNull>
+      <SequenceIdentity>1</SequenceIdentity>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <column id="382" parent="288" name="user_id">
+      <Position>2</Position>
+      <DataType>bigint|0s</DataType>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <column id="383" parent="288" name="role_id">
+      <Position>3</Position>
+      <DataType>bigint|0s</DataType>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <key id="384" parent="288" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>id</ColNames>
       <Primary>1</Primary>

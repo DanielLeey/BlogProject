@@ -11,16 +11,13 @@ import com.lee.enums.AppHttpCodeEnum;
 import com.lee.exception.SystemException;
 import com.lee.service.UserService;
 import com.lee.utils.BeanCopyUtils;
-import com.lee.utils.JwtUtil;
+import com.lee.utils.JwtTokenUtil;
 import com.lee.utils.RedisCache;
 import com.lee.utils.SecurityUtils;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -41,6 +38,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     @Autowired
     PasswordEncoder passwordEncoder;
 
+    @Autowired
+    JwtTokenUtil jwtTokenUtil;
+
     @Override
     public Map<String, Object> login(User user) {
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(user.getUserName(), user.getPassword());
@@ -54,16 +54,15 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         }
         // 获取认证后的对象
         LoginUserDetails loginUserDetails = (LoginUserDetails) authenticate.getPrincipal();
-        // 获取userId，生成jwt Token
-        String userId = loginUserDetails.getUser().getId().toString();
-        String jwt = JwtUtil.createJWT(userId);
-        // 放入redis
+        // 通过认证后的对象，生成jwt Token，sub：username
+        String token = jwtTokenUtil.generateToken(loginUserDetails);
+        // TODO: 放入redis，设置过期时间，过期则需要重新登录
 
-        redisCache.setCacheObject("bloglogin:" + userId, loginUserDetails);
+        redisCache.setCacheObject("bloglogin:" + loginUserDetails.getUsername(), loginUserDetails);
         UserInfoVo userInfoVo = BeanCopyUtils.copyBean(loginUserDetails.getUser(), UserInfoVo.class);
         // 放入map返回
         Map<String, Object> map = new HashMap<>(2);
-        map.put("token", jwt);
+        map.put("token", token);
         map.put("userInfo", userInfoVo);
         return map;
     }
