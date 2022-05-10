@@ -1,7 +1,7 @@
-package com.lee.service.impl;
+package com.lee.security.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.lee.domain.entity.LoginUserDetails;
+import com.lee.security.entity.LoginUserDetails;
 import com.lee.domain.entity.Resource;
 import com.lee.enums.AppHttpCodeEnum;
 import com.lee.exception.SystemException;

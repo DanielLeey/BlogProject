@@ -8,8 +8,8 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="lee-admin" />
-        <module name="lee-framework" />
         <module name="lee-blog" />
+        <module name="lee-framework" />
       </profile>
     </annotationProcessing>
   </component>

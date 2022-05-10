@@ -1,6 +1,6 @@
 package com.lee.utils;
 
-import com.lee.domain.entity.LoginUserDetails;
+import com.lee.security.entity.LoginUserDetails;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 

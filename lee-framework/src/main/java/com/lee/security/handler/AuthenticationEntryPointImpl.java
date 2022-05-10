@@ -1,4 +1,4 @@
-package com.lee.handler.security;
+package com.lee.security.handler;
 
 import com.alibaba.fastjson.JSON;
 import com.lee.domain.ResponseResult;

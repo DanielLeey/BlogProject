@@ -1,7 +1,8 @@
-package com.lee.domain.entity;
+package com.lee.security.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.lee.domain.entity.Resource;
 import com.lee.domain.entity.entity.User;
 import lombok.AllArgsConstructor;
 import lombok.Data;

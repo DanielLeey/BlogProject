@@ -1,19 +1,12 @@
-package com.lee.filter;
+package com.lee.security.filter;
 
-import com.alibaba.fastjson.JSON;
-import com.lee.domain.ResponseResult;
-import com.lee.domain.entity.LoginUserDetails;
-import com.lee.enums.AppHttpCodeEnum;
-import com.lee.utils.JwtTokenUtil;
-import com.lee.utils.JwtUtil;
+import com.lee.security.entity.LoginUserDetails;
+import com.lee.security.utils.JwtTokenUtil;
 import com.lee.utils.RedisCache;
-import com.lee.utils.WebUtils;
-import io.jsonwebtoken.Claims;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.servlet.FilterChain;
