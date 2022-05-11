@@ -1,5 +1,6 @@
 package com.lee.security.config;
 
+import com.lee.security.filter.DynamicSecurityFilter;
 import com.lee.security.filter.JwtAuthenticationTokenFilter;
 import com.lee.security.utils.JwtTokenUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.access.AccessDeniedHandler;
+import org.springframework.security.web.access.intercept.FilterSecurityInterceptor;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
@@ -45,6 +47,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.logout().disable();
         //添加自定义过滤器
         http.addFilterBefore(jwtAuthenticationTokenFilter(), UsernamePasswordAuthenticationFilter.class);
+        //添加自定义权限过滤器
+        http.addFilterBefore(dynamicSecurityFilter(), FilterSecurityInterceptor.class);
         //配置异常处理器
         http.exceptionHandling()
                 .authenticationEntryPoint(authenticationEntryPoint)
@@ -84,6 +88,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return new JwtAuthenticationTokenFilter();
     }
 
+    /**
+     * 添加自定义权限过滤器
+     * @return
+     */
+    @Bean
+    public DynamicSecurityFilter dynamicSecurityFilter() {
+        return new DynamicSecurityFilter();
+    }
     @Bean
     public JwtTokenUtil jwtTokenUtil() {
         return new JwtTokenUtil();

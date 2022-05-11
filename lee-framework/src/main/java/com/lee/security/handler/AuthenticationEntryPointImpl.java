@@ -16,7 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
- * 认证失败处理器
+ * 认证失败处理器，未登录或登录失效下
  */
 @Component
 public class AuthenticationEntryPointImpl implements AuthenticationEntryPoint {

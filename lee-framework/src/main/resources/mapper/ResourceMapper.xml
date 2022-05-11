@@ -8,7 +8,7 @@
             sys_user su
             LEFT JOIN sys_user_role_relation sur ON su.id = sur.user_id
             LEFT JOIN sys_role_resource_relation srr ON sur.role_id = srr.role_id
-            LEFT JOIN sys_resource sr ON srr.role_id = sr.id
+            LEFT JOIN sys_resource sr ON srr.resource_id = sr.id
         WHERE
             su.id = #{id}
             AND sr.id IS NOT NULL

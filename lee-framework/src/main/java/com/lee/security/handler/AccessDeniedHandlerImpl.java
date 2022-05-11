@@ -14,7 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
- * 授权失败处理器
+ * 授权失败处理器，访问接口没有权限时
  */
 @Component
 public class AccessDeniedHandlerImpl implements AccessDeniedHandler {

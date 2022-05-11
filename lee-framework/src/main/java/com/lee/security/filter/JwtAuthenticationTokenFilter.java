@@ -1,5 +1,7 @@
 package com.lee.security.filter;
 
+import com.lee.enums.AppHttpCodeEnum;
+import com.lee.exception.SystemException;
 import com.lee.security.entity.LoginUserDetails;
 import com.lee.security.utils.JwtTokenUtil;
 import com.lee.utils.RedisCache;
@@ -45,6 +47,9 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
             String userNameFromToken = jwtTokenUtil.getUserNameFromToken(authToken);
             //2.获取redis中的UserDetails
             LoginUserDetails loginUserDetails = (LoginUserDetails) redisCache.getCacheObject("bloglogin:" + userNameFromToken);
+            if(Objects.isNull(loginUserDetails)) {
+                throw new SystemException(AppHttpCodeEnum.NEED_LOGIN);
+            }
             //3.校验token和redis中是否一致，token是否过期
             if (jwtTokenUtil.validateToken(authToken, loginUserDetails)) {
                 //没有过期 存入SecurityContextHolder 权限暂时为null
