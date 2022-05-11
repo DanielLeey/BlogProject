@@ -56,9 +56,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         LoginUserDetails loginUserDetails = (LoginUserDetails) authenticate.getPrincipal();
         // 通过认证后的对象，生成jwt Token，sub：username
         String token = jwtTokenUtil.generateToken(loginUserDetails);
-        // TODO: 放入redis，设置过期时间，过期则需要重新登录
-
-        redisCache.setCacheObject("bloglogin:" + loginUserDetails.getUsername(), loginUserDetails);
+        // 不在此处放入redis 因为登录时需要查询数据库，重复登录压力大
         UserInfoVo userInfoVo = BeanCopyUtils.copyBean(loginUserDetails.getUser(), UserInfoVo.class);
         // 放入map返回
         Map<String, Object> map = new HashMap<>(2);

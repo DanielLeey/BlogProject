@@ -29,7 +29,7 @@ public class AutoApplicationTests {
 
     @Test
     public void getEncodePassword() {
-        String password = "123456";
+        String password = "1234567";
         String encodePassword = passwordEncoder.encode(password);
         System.out.println(encodePassword);
     }
