@@ -45,7 +45,7 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
             //解析token中的用户名，取出redis中存的UserDetails，并校验token和redis中是否一致，token是否过期
             //1.解析token中的用户名
             String userNameFromToken = jwtTokenUtil.getUserNameFromToken(authToken);
-            //2.获取redis中的UserDetails
+            //TODO: 获取redis中的UserDetails，需要考虑如果redis宕机，则需要先获取redis获取不到获取数据库
             LoginUserDetails loginUserDetails = (LoginUserDetails) redisCache.getCacheObject("bloglogin:" + userNameFromToken);
             if(Objects.isNull(loginUserDetails)) {
                 throw new SystemException(AppHttpCodeEnum.NEED_LOGIN);
