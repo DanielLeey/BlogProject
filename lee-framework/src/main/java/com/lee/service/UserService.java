@@ -2,9 +2,9 @@ package com.lee.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.lee.domain.ResponseResult;
-import com.lee.domain.entity.entity.User;
+import com.lee.domain.entity.User;
 import com.lee.domain.vo.UserInfoVo;
-import com.lee.domain.entity.entity.User;
+import com.lee.domain.entity.User;
 
 import java.util.Map;
 

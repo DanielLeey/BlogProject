@@ -1,7 +1,7 @@
 package com.lee.controller;
 
 import com.lee.domain.ResponseResult;
-import com.lee.domain.entity.entity.User;
+import com.lee.domain.entity.User;
 import com.lee.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;

@@ -22,7 +22,7 @@ import java.util.List;
  * @Version: 1.0
  */
 @RestController
-@RequestMapping("/aritcle")
+@RequestMapping("/article")
 public class AritcleController {
 
     @Autowired

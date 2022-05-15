@@ -3,7 +3,7 @@ package com.lee.security.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.lee.annotation.CacheException;
 import com.lee.domain.entity.Resource;
-import com.lee.domain.entity.entity.User;
+import com.lee.domain.entity.User;
 import com.lee.enums.AppHttpCodeEnum;
 import com.lee.exception.SystemException;
 import com.lee.security.entity.LoginUserDetails;

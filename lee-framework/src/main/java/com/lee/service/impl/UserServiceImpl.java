@@ -5,7 +5,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.lee.dao.UserMapper;
 import com.lee.domain.ResponseResult;
 import com.lee.security.entity.LoginUserDetails;
-import com.lee.domain.entity.entity.User;
+import com.lee.domain.entity.User;
 import com.lee.domain.vo.UserInfoVo;
 import com.lee.enums.AppHttpCodeEnum;
 import com.lee.exception.SystemException;
@@ -93,7 +93,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     @Override
     public ResponseResult register(User user) {
         //对数据进行非空判断
-        if (!StringUtils.hasText(user.getUserName())) {
+ /*       if (!StringUtils.hasText(user.getUserName())) {
             throw new SystemException(AppHttpCodeEnum.USERNAME_NOT_NULL);
         }
         if (!StringUtils.hasText(user.getPassword())) {
@@ -104,7 +104,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         }
         if (!StringUtils.hasText(user.getNickName())) {
             throw new SystemException(AppHttpCodeEnum.NICKNAME_NOT_NULL);
-        }
+        }*/
         //对数据进行是否存在的判断
         if (userNameExist(user.getUserName())) {
             throw new SystemException(AppHttpCodeEnum.USERNAME_EXIST);

@@ -7,7 +7,7 @@ import com.lee.constants.SystemConstants;
 import com.lee.dao.CommentMapper;
 import com.lee.domain.ResponseResult;
 import com.lee.domain.entity.Comment;
-import com.lee.domain.entity.entity.User;
+import com.lee.domain.entity.User;
 import com.lee.domain.vo.CommentVo;
 import com.lee.enums.AppHttpCodeEnum;
 import com.lee.service.CommentService;

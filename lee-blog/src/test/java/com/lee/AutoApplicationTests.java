@@ -29,14 +29,15 @@ public class AutoApplicationTests {
 
     @Test
     public void getEncodePassword() {
-        String password = "1234567";
+        String password = "123456";
         String encodePassword = passwordEncoder.encode(password);
         System.out.println(encodePassword);
     }
 
     @Test
     public void deCodePassword() {
-        String password = "$2a$10$UQx79DHOWVRFhdT/8h/Zz.gJlbTpdzU6KeO.awkdJv/frd10.bG3q";
+        String password = "$2a$10$xc8A44uiO6qKKb8FGf36uusbvsF7hEkhUy/YSnekIGQ1LMQrST3Cm";
+
         final boolean matches = passwordEncoder.matches("123456", password);
         System.out.println(matches);
     }
