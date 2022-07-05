@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.Date;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -21,8 +22,15 @@ public class ArticleListVo {
     //缩略图
     private String thumbnail;
 
+    //标签
+    private String articleTags;
+
+    private List<String> tags;
+
     //访问量
     private Long viewCount;
+
+    private String createBy;
 
     private Date createTime;
 }

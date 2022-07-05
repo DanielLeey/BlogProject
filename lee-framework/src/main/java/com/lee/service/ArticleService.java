@@ -23,4 +23,6 @@ public interface ArticleService extends IService<Article> {
     ArticleDetailVo getArticleDetail(Long id);
 
     ResponseResult updateViewCount(Long id);
+
+    List<ArticleListVo> getArticleList(int pageSize, int currentPage, boolean isLatest, String articleType);
 }

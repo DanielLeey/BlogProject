@@ -1,5 +1,8 @@
 package com.lee.service.impl;
 
+import cn.hutool.Hutool;
+import cn.hutool.core.util.HashUtil;
+import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -15,9 +18,12 @@ import com.lee.service.ArticleService;
 import com.lee.service.CategoryService;
 import com.lee.utils.BeanCopyUtils;
 import com.lee.utils.RedisCache;
+import io.jsonwebtoken.lang.Strings;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -90,5 +96,30 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
         //修改redis中hash key 中 key的value
         redisCache.incrCacheMapValue("Article:ViewCount", id.toString(), 1);
         return ResponseResult.okResult();
+    }
+
+    @Override
+    public List<ArticleListVo> getArticleList(int pageSize, int currentPage, boolean isLatest, String articleType) {
+        LambdaQueryWrapper<Article> wrapper = new LambdaQueryWrapper<>();
+        // 根据文章创建时间最新排序
+        if (isLatest) {
+            wrapper.orderByDesc(Article::getCreateTime);
+        }
+        // 根据文章类型分类
+        if (StrUtil.isNotBlank(articleType)) {
+            wrapper.eq(Article::getCategoryId, articleType);
+        }
+        Page<Article> page = new Page<>(currentPage, pageSize);
+        page(page, wrapper);
+        List<Article> articles = page.getRecords();
+        List<ArticleListVo> articleListVos = BeanCopyUtils.copyBeanList(articles, ArticleListVo.class).stream().map(articleListVo -> {
+            String articleTags = articleListVo.getArticleTags();
+            if (!StringUtils.hasText(articleTags)) {
+                return articleListVo;
+            }
+            articleListVo.setTags(Arrays.asList(articleTags.split(",")));
+            return articleListVo;
+        }).collect(Collectors.toList());
+        return articleListVos;
     }
 }

@@ -45,6 +45,12 @@ public class Article {
     //****************添加分类Name*********************
     @TableField(exist = false)
     private String categoryName;
+
+    /**
+     * 文章标签
+     */
+    private String articleTags;
+
     /**
      * 缩略图
      */
@@ -66,11 +72,11 @@ public class Article {
      */
     private String isComment;
     
-    private Long createBy;
+    private String createBy;
     
     private Date createTime;
     
-    private Long updateBy;
+    private String updateBy;
     
     private Date updateTime;
     /**

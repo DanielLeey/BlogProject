@@ -26,6 +26,10 @@ public class ArticleDetailVo {
     private Long categoryId;
     //****************添加分类Name*********************
     private String categoryName;
+
+    //标签
+    private String articleTags;
+
     /**
      * 访问量
      */
@@ -34,6 +38,8 @@ public class ArticleDetailVo {
      * 是否允许评论 1是，0否
      */
     private String isComment;
+
+    private String createBy;
 
     private Date createTime;
 }
