@@ -15,6 +15,7 @@ import com.lee.security.utils.JwtTokenUtil;
 import com.lee.utils.RedisCache;
 import com.lee.utils.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -22,6 +23,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -40,6 +42,15 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 
     @Autowired
     JwtTokenUtil jwtTokenUtil;
+
+    @Autowired
+    private HttpServletRequest request;
+
+    @Value("${jwt.tokenHeader}")
+    private String tokenHeader;
+
+    @Value("${jwt.tokenHead}")
+    private String tokenHead;
 
     @Override
     public Map<String, Object> login(User user) {
@@ -132,4 +143,21 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         int count = count(wrapper);
         return count > 0;
     }
+
+    //废弃，可以直接从SecurityContextHolder中获取
+    @Override
+    public User getCurrentUser() {
+        // 从请求头中获取token
+        String authHeader = request.getHeader("Authorization");
+        //如果请求头中带有Authorization不为空，则解析token
+        if (Objects.nonNull(authHeader) && authHeader.startsWith(this.tokenHead)) {
+            String authToken = authHeader.substring(this.tokenHead.length());// The part after "Bearer "
+            String userNameFromToken = jwtTokenUtil.getUserNameFromToken(authToken);
+            // 获取redis中的UserDetails，需要考虑如果redis宕机，则需要先获取redis获取不到获取数据库
+            LoginUserDetails loginUserDetails = (LoginUserDetails) redisCache.getCacheObject("bloglogin:" + userNameFromToken);
+            return loginUserDetails.getUser();
+        }
+        throw new SystemException(AppHttpCodeEnum.NEED_LOGIN);
+    }
+
 }

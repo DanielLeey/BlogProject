@@ -18,4 +18,10 @@ public interface UserService extends IService<User> {
     ResponseResult updateUserInfo(User user);
 
     ResponseResult register(User user);
+
+    /**
+     * 获取当前系统用户
+     * @return
+     */
+    User getCurrentUser();
 }

@@ -1,25 +1,19 @@
 package com.lee.controller;
 
+import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.lee.domain.ResponseResult;
 import com.lee.domain.entity.Article;
-import com.lee.domain.vo.ArticleDetailVo;
-import com.lee.domain.vo.ArticleListVo;
-import com.lee.domain.vo.HotArticleVo;
-import com.lee.domain.vo.PageVo;
+import com.lee.domain.entity.User;
+import com.lee.domain.vo.*;
 import com.lee.service.ArticleService;
+import com.lee.service.UserService;
 import com.lee.utils.BeanCopyUtils;
+import com.lee.utils.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-import java.util.function.Function;
-import java.util.stream.Collectors;
+import java.util.*;
 
 /**
  * @Author: admin
@@ -28,22 +22,44 @@ import java.util.stream.Collectors;
  */
 @RestController
 @RequestMapping("/article")
+
 public class AritcleController {
 
     @Autowired
     private ArticleService articleService;
 
+    @Autowired
+    private  UserService userService;
+
     /**
      * @param pageSize    每一页的数据条数，默认5条
      * @param currentPage 当前的页数
      * @param isLatest    是否按最新排序
+     * @param articleType 文章类型
      * @return
      */
     @GetMapping("/list")
-    public List<ArticleListVo> getArticleList(@RequestParam("pageSize") int pageSize, @RequestParam("currentPage") int currentPage,
+    public ArticleListVo getArticleList(@RequestParam("pageSize") int pageSize, @RequestParam("currentPage") int currentPage,
                                               @RequestParam(value = "latest", required = false) boolean isLatest, @RequestParam(value = "articleType", required = false) String articleType) {
-        List<ArticleListVo> articleListVos = articleService.getArticleList(pageSize, currentPage, isLatest, articleType);
-        return articleListVos;
+        List<ArticleList> articleLists = articleService.getArticleList(pageSize, currentPage, isLatest, articleType);
+        LambdaQueryWrapper<Article> wrapper = new LambdaQueryWrapper<>();
+        if (StrUtil.isNotBlank(articleType)) {
+            wrapper.eq(Article::getCategoryId, articleType);
+        }
+        int count = articleService.count(wrapper);
+        ArticleListVo articleListVo = new ArticleListVo(articleLists, count);
+        return articleListVo;
+    }
+
+    @PostMapping("/save")
+    public boolean saveArticle(@RequestBody Article article) {
+        // 获取文章创建人id，获取不到就获取系统当前用户id
+        // User currentUser = userService.getCurrentUser();
+        Long creatorId = Optional.ofNullable(article.getCreateBy()).orElse(SecurityUtils.getUserId());
+        User user = userService.getById(creatorId);
+        article.setCreatorName(user.getUserName());
+        boolean save = articleService.save(article);
+        return save;
     }
 
     @GetMapping("/hotArticleList")
@@ -61,10 +77,24 @@ public class AritcleController {
 
     @GetMapping("/{id}")
     public ArticleDetailVo getArticleDetail(@PathVariable("id") Long id) {
+        articleService.updateViewCount(id);
         return articleService.getArticleDetail(id);
     }
 
-
+    @GetMapping("/searchTag")
+    public Set<String> getArticleTags() {
+        List<Article> articleList = articleService.list();
+        Set<String> result = new HashSet<>();
+        for (Article article : articleList) {
+            String articleTags = article.getArticleTags();
+            String[] tags = new String[0];
+            if (articleTags != null) {
+                tags = articleTags.split(",");
+            }
+            Collections.addAll(result, tags);
+        }
+        return result;
+    }
     /**
      * 更新文章浏览量，修改redis中数据
      *

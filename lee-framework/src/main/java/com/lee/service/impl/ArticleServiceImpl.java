@@ -1,24 +1,22 @@
 package com.lee.service.impl;
 
-import cn.hutool.Hutool;
-import cn.hutool.core.util.HashUtil;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.lee.constants.RedisKeyConstants;
 import com.lee.constants.SystemConstants;
 import com.lee.dao.ArticleMapper;
 import com.lee.domain.ResponseResult;
 import com.lee.domain.entity.Article;
 import com.lee.domain.entity.Category;
 import com.lee.domain.vo.ArticleDetailVo;
-import com.lee.domain.vo.ArticleListVo;
+import com.lee.domain.vo.ArticleList;
 import com.lee.domain.vo.PageVo;
 import com.lee.service.ArticleService;
 import com.lee.service.CategoryService;
 import com.lee.utils.BeanCopyUtils;
 import com.lee.utils.RedisCache;
-import io.jsonwebtoken.lang.Strings;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -69,9 +67,9 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
         List<Article> articles = page.getRecords();
         //查询article的分类id，查询对应的分类名，设置到article中
         articles.stream().map(article -> article.setCategoryName(categoryService.getById(article.getCategoryId()).getName())).collect(Collectors.toList());
-        List<ArticleListVo> articleListVos = BeanCopyUtils.copyBeanList(articles, ArticleListVo.class);
+        List<ArticleList> articleLists = BeanCopyUtils.copyBeanList(articles, ArticleList.class);
         //封装成Page返回
-        PageVo pageVo = new PageVo(articleListVos, page.getTotal());
+        PageVo pageVo = new PageVo(articleLists, page.getTotal());
         return pageVo;
     }
 
@@ -85,7 +83,7 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
             article.setCategoryName(category.getName());
         }
         //从redis中获取文章的浏览量
-        Integer viewCount = redisCache.getCacheMapValue("Article:ViewCount", article.getId().toString());
+        Integer viewCount = redisCache.getCacheMapValue(RedisKeyConstants.VIEW_COUNT, article.getId().toString());
         article.setViewCount(viewCount.longValue());
         //放入ArticleDetailVo
         return BeanCopyUtils.copyBean(article, ArticleDetailVo.class);
@@ -94,12 +92,12 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
     @Override
     public ResponseResult updateViewCount(Long id) {
         //修改redis中hash key 中 key的value
-        redisCache.incrCacheMapValue("Article:ViewCount", id.toString(), 1);
+        redisCache.incrCacheMapValue(RedisKeyConstants.VIEW_COUNT, id.toString(), 1);
         return ResponseResult.okResult();
     }
 
     @Override
-    public List<ArticleListVo> getArticleList(int pageSize, int currentPage, boolean isLatest, String articleType) {
+    public List<ArticleList> getArticleList(int pageSize, int currentPage, boolean isLatest, String articleType) {
         LambdaQueryWrapper<Article> wrapper = new LambdaQueryWrapper<>();
         // 根据文章创建时间最新排序
         if (isLatest) {
@@ -112,14 +110,14 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
         Page<Article> page = new Page<>(currentPage, pageSize);
         page(page, wrapper);
         List<Article> articles = page.getRecords();
-        List<ArticleListVo> articleListVos = BeanCopyUtils.copyBeanList(articles, ArticleListVo.class).stream().map(articleListVo -> {
-            String articleTags = articleListVo.getArticleTags();
+        List<ArticleList> articleLists = BeanCopyUtils.copyBeanList(articles, ArticleList.class).stream().map(articleList -> {
+            String articleTags = articleList.getArticleTags();
             if (!StringUtils.hasText(articleTags)) {
-                return articleListVo;
+                return articleList;
             }
-            articleListVo.setTags(Arrays.asList(articleTags.split(",")));
-            return articleListVo;
+            articleList.setTags(Arrays.asList(articleTags.split(",")));
+            return articleList;
         }).collect(Collectors.toList());
-        return articleListVos;
+        return articleLists;
     }
 }

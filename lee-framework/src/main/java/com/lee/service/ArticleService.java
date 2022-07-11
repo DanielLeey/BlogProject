@@ -4,7 +4,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.lee.domain.ResponseResult;
 import com.lee.domain.entity.Article;
 import com.lee.domain.vo.ArticleDetailVo;
-import com.lee.domain.vo.ArticleListVo;
+import com.lee.domain.vo.ArticleList;
 import com.lee.domain.vo.PageVo;
 
 import java.util.List;
@@ -24,5 +24,5 @@ public interface ArticleService extends IService<Article> {
 
     ResponseResult updateViewCount(Long id);
 
-    List<ArticleListVo> getArticleList(int pageSize, int currentPage, boolean isLatest, String articleType);
+    List<ArticleList> getArticleList(int pageSize, int currentPage, boolean isLatest, String articleType);
 }

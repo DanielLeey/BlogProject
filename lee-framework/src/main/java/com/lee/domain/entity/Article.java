@@ -2,6 +2,7 @@ package com.lee.domain.entity;
 
 import java.util.Date;
 
+import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.TableField;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -71,13 +72,19 @@ public class Article {
      * 是否允许评论 1是，0否
      */
     private String isComment;
-    
-    private String createBy;
-    
+
+    private String creatorName;
+
+    @TableField(fill = FieldFill.INSERT)
+    private Long createBy;
+
+    @TableField(fill = FieldFill.INSERT)
     private Date createTime;
-    
-    private String updateBy;
-    
+
+    @TableField(fill = FieldFill.UPDATE)
+    private Long updateBy;
+
+    @TableField(fill = FieldFill.UPDATE)
     private Date updateTime;
     /**
      * 删除标志（0代表未删除，1代表已删除）
