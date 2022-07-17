@@ -7,13 +7,17 @@ import com.lee.domain.entity.Article;
 import com.lee.domain.entity.User;
 import com.lee.domain.vo.*;
 import com.lee.service.ArticleService;
+import com.lee.service.EsArticleService;
 import com.lee.service.UserService;
 import com.lee.utils.BeanCopyUtils;
 import com.lee.utils.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * @Author: admin
@@ -29,7 +33,10 @@ public class AritcleController {
     private ArticleService articleService;
 
     @Autowired
-    private  UserService userService;
+    private UserService userService;
+
+    @Autowired
+    private EsArticleService esArticleService;
 
     /**
      * @param pageSize    每一页的数据条数，默认5条
@@ -40,7 +47,7 @@ public class AritcleController {
      */
     @GetMapping("/list")
     public ArticleListVo getArticleList(@RequestParam("pageSize") int pageSize, @RequestParam("currentPage") int currentPage,
-                                              @RequestParam(value = "latest", required = false) boolean isLatest, @RequestParam(value = "articleType", required = false) String articleType) {
+                                        @RequestParam(value = "latest", required = false, defaultValue = "true") boolean isLatest, @RequestParam(value = "articleType", required = false) String articleType) {
         List<ArticleList> articleLists = articleService.getArticleList(pageSize, currentPage, isLatest, articleType);
         LambdaQueryWrapper<Article> wrapper = new LambdaQueryWrapper<>();
         if (StrUtil.isNotBlank(articleType)) {
@@ -95,6 +102,7 @@ public class AritcleController {
         }
         return result;
     }
+
     /**
      * 更新文章浏览量，修改redis中数据
      *
@@ -103,5 +111,21 @@ public class AritcleController {
     @RequestMapping("/updateViewCount/{id}")
     public ResponseResult updateViewCount(@PathVariable("id") Long id) {
         return articleService.updateViewCount(id);
+    }
+
+    @RequestMapping("/search")
+    public ArticleListVo articleSearch(@RequestParam("keywords") String keywords) {
+        Page<Article> articlePage = esArticleService.search(keywords, 0, 5);
+        List<Article> articles = articlePage.getContent();
+        List<ArticleList> articleLists = BeanCopyUtils.copyBeanList(articles, ArticleList.class).stream().map(articleList -> {
+            String articleTags = articleList.getArticleTags();
+            if (!StringUtils.hasText(articleTags)) {
+                return articleList;
+            }
+            articleList.setTags(Arrays.asList(articleTags.split(",")));
+            return articleList;
+        }).collect(Collectors.toList());
+        ArticleListVo articleListVo = new ArticleListVo(articleLists, articleLists.size());
+        return articleListVo;
     }
 }

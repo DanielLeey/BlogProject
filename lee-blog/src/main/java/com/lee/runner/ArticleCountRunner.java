@@ -1,21 +1,15 @@
 package com.lee.runner;
 
 import com.lee.constants.RedisKeyConstants;
-import com.lee.domain.entity.Article;
 import com.lee.domain.entity.ArticleCount;
 import com.lee.service.ArticleCountService;
-import com.lee.service.ArticleService;
 import com.lee.utils.RedisCache;
-import io.swagger.models.auth.In;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.Map;
-import java.util.function.BiConsumer;
-import java.util.function.Function;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 /**

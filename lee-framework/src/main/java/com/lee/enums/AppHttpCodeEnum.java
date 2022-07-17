@@ -22,6 +22,7 @@ public enum AppHttpCodeEnum {
     PASSWORD_NOT_NULL(510, "密码不能为空"),
     EMAIL_NOT_NULL(511, "邮箱不能为空"),
     NICKNAME_EXIST(512, "昵称已存在"),
+    ES_CREATE_FAIL(520, "es创建文档失败"),
     COMMENT_NOT_NULL(601, "评论不能为空"),
     FILE_TYPE_ERROR(701, "上传图片格式不为PNG");
     int code;

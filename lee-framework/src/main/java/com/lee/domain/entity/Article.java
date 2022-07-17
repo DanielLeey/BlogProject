@@ -1,15 +1,19 @@
 package com.lee.domain.entity;
 
-import java.util.Date;
-
 import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.experimental.Accessors;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.elasticsearch.annotations.Document;
+import org.springframework.data.elasticsearch.annotations.Field;
+import org.springframework.data.elasticsearch.annotations.FieldType;
+
+import java.util.Date;
 
 /**
  * 文章表(Article)表实体类
@@ -23,33 +27,44 @@ import lombok.experimental.Accessors;
 @NoArgsConstructor
 @TableName("sg_article")
 @Accessors(chain = true)
+@Document(indexName = "blog", type = "article", shards = 1, replicas = 0)
 public class Article {
     private static final long serialVersionUID = 884140206313067298L;
     @TableId
+    @Id
     private Long id;
     /**
      * 标题
+     * es:可根据ik分词器查找
      */
+    @Field(analyzer = "ik_max_word", type = FieldType.Text)
     private String title;
     /**
      * 文章内容
      */
+    @Field(analyzer = "ik_max_word", type = FieldType.Text)
     private String content;
     /**
      * 文章摘要
      */
+    @Field(analyzer = "ik_max_word", type = FieldType.Text)
     private String summary;
     /**
      * 所属分类id
      */
     private Long categoryId;
-    //****************添加分类Name*********************
+    /**
+     * 添加分类Name
+     * es：根据分类名称关键字查找
+     */
     @TableField(exist = false)
+    @Field(type = FieldType.Keyword)
     private String categoryName;
 
     /**
      * 文章标签
      */
+    @Field(analyzer = "ik_max_word", type = FieldType.Text)
     private String articleTags;
 
     /**
