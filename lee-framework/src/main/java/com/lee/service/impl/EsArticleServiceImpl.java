@@ -1,6 +1,6 @@
 package com.lee.service.impl;
 
-import com.lee.dao.EsArticleRepository;
+import com.lee.respository.EsArticleRepository;
 import com.lee.domain.entity.Article;
 import com.lee.service.ArticleService;
 import com.lee.service.EsArticleService;

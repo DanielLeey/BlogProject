@@ -1,4 +1,4 @@
-package com.lee.dao;
+package com.lee.respository;
 
 import com.lee.domain.entity.Article;
 import org.springframework.data.domain.Page;
