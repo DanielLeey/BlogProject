@@ -30,4 +30,10 @@ public class UserController {
     public ResponseResult register(@Validated @RequestBody User user) {
         return userService.register(user);
     }
+
+    @PostMapping("/check")
+    public ResponseResult checkToken() {
+        return ResponseResult.okResult("ok");
+    }
+
 }

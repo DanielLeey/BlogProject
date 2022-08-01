@@ -2,6 +2,8 @@ package com.lee.domain;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.lee.enums.AppHttpCodeEnum;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -13,9 +15,13 @@ import java.io.Serializable;
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @Data
+@ApiModel(description = "返回结果")
 public class ResponseResult<T> implements Serializable {
+    @ApiModelProperty("返回状态码")
     private Integer code;
+    @ApiModelProperty("描述信息")
     private String msg;
+    @ApiModelProperty("业务数据")
     private T data;
 
     public ResponseResult() {

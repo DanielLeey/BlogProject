@@ -11,6 +11,10 @@ import com.lee.service.EsArticleService;
 import com.lee.service.UserService;
 import com.lee.utils.BeanCopyUtils;
 import com.lee.utils.SecurityUtils;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.util.StringUtils;
@@ -26,7 +30,7 @@ import java.util.stream.Collectors;
  */
 @RestController
 @RequestMapping("/article")
-
+@Api(tags = "文章管理接口")
 public class AritcleController {
 
     @Autowired
@@ -46,8 +50,17 @@ public class AritcleController {
      * @return
      */
     @GetMapping("/list")
-    public ArticleListVo getArticleList(@RequestParam("pageSize") int pageSize, @RequestParam("currentPage") int currentPage,
-                                        @RequestParam(value = "latest", required = false, defaultValue = "true") boolean isLatest, @RequestParam(value = "articleType", required = false) String articleType) {
+    @ApiOperation("查询所有文章")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "pageSize", value = "每页数量", required = true),
+            @ApiImplicitParam(name = "currentPage", value = "页码", required = true),
+            @ApiImplicitParam(name = "latest", value = "是否最新：1是0否", required = false),
+            @ApiImplicitParam(name = "articleType", value = "分类id", required = false)
+    })
+    public ArticleListVo getArticleList(@RequestParam("pageSize") int pageSize,
+                                        @RequestParam("currentPage") int currentPage,
+                                        @RequestParam(value = "latest", required = false, defaultValue = "true") boolean isLatest,
+                                        @RequestParam(value = "articleType", required = false) String articleType) {
         List<ArticleList> articleLists = articleService.getArticleList(pageSize, currentPage, isLatest, articleType);
         LambdaQueryWrapper<Article> wrapper = new LambdaQueryWrapper<>();
         if (StrUtil.isNotBlank(articleType)) {
@@ -59,6 +72,7 @@ public class AritcleController {
     }
 
     @PostMapping("/save")
+    @ApiOperation("保存文章")
     public boolean saveArticle(@RequestBody Article article) {
         // 获取文章创建人id，获取不到就获取系统当前用户id
         // User currentUser = userService.getCurrentUser();
@@ -70,6 +84,7 @@ public class AritcleController {
     }
 
     @GetMapping("/hotArticleList")
+    @ApiOperation("查询热门文章")
     public List<HotArticleVo> hotArticleList() {
         //查询热点文章
         List<Article> articles = articleService.hotArticleList();
@@ -78,17 +93,26 @@ public class AritcleController {
     }
 
     @GetMapping("/articleList")
+    @ApiOperation("查询某一分类下所用文章")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "pageNum", value = "页码", required = true),
+            @ApiImplicitParam(name = "pageSize", value = "每页数量", required = true),
+            @ApiImplicitParam(name = "categoryId", value = "分类id", required = true)
+    })
     public PageVo articleList(Integer pageNum, Integer pageSize, Long categoryId) {
         return articleService.articleList(pageNum, pageSize, categoryId);
     }
 
     @GetMapping("/{id}")
+    @ApiOperation("查询文章详情")
+    @ApiImplicitParam(name = "id", value = "文章id")
     public ArticleDetailVo getArticleDetail(@PathVariable("id") Long id) {
         articleService.updateViewCount(id);
         return articleService.getArticleDetail(id);
     }
 
     @GetMapping("/searchTag")
+    @ApiOperation("查询所有文章标签")
     public Set<String> getArticleTags() {
         List<Article> articleList = articleService.list();
         Set<String> result = new HashSet<>();
@@ -108,12 +132,16 @@ public class AritcleController {
      *
      * @return
      */
-    @RequestMapping("/updateViewCount/{id}")
+    @GetMapping("/updateViewCount/{id}")
+    @ApiOperation("更新文章浏览量")
+    @ApiImplicitParam(name = "id", value = "文章id")
     public ResponseResult updateViewCount(@PathVariable("id") Long id) {
         return articleService.updateViewCount(id);
     }
 
-    @RequestMapping("/search")
+    @GetMapping("/search")
+    @ApiOperation("搜索文章")
+    @ApiImplicitParam(name = "keywords", value = "文章关键词")
     public ArticleListVo articleSearch(@RequestParam("keywords") String keywords) {
         Page<Article> articlePage = esArticleService.search(keywords, 0, 5);
         List<Article> articles = articlePage.getContent();

@@ -52,14 +52,10 @@ public class JwtTokenUtil {
      */
     private Claims getClaimsFromToken(String token) {
         Claims claims = null;
-        try {
-            claims = Jwts.parser()
-                    .setSigningKey(secret)
-                    .parseClaimsJws(token)
-                    .getBody();
-        } catch (Exception e) {
-            LOGGER.info("JWT格式验证失败:{}", token);
-        }
+        claims = Jwts.parser()
+                .setSigningKey(secret)
+                .parseClaimsJws(token)
+                .getBody();
         return claims;
     }
 
