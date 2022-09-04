@@ -1,6 +1,7 @@
 package com.lee.domain.entity;
 
 
+import com.lee.domain.vo.ArticleDetailVo;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -42,4 +43,16 @@ public class UserReadHistory {
     private Long categoryId;
 
     private String articleTags;
+
+    public UserReadHistory(User user, ArticleDetailVo articleDetailVo) {
+        this.setUserId(user.getId());
+        this.setUserName(user.getUserName());
+        this.setNickName(user.getNickName());
+        this.setCreateTime(new Date());
+        this.setArticleId(articleDetailVo.getId());
+        this.setTitle(articleDetailVo.getTitle());
+        this.setCategoryId(articleDetailVo.getCategoryId());
+        this.setArticleTags(articleDetailVo.getArticleTags());
+    }
+
 }

@@ -5,9 +5,11 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.lee.domain.ResponseResult;
 import com.lee.domain.entity.Article;
 import com.lee.domain.entity.User;
+import com.lee.domain.entity.UserReadHistory;
 import com.lee.domain.vo.*;
 import com.lee.service.ArticleService;
 import com.lee.service.EsArticleService;
+import com.lee.service.UserReadHistoryService;
 import com.lee.service.UserService;
 import com.lee.utils.BeanCopyUtils;
 import com.lee.utils.SecurityUtils;
@@ -15,6 +17,8 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.util.StringUtils;
@@ -33,6 +37,8 @@ import java.util.stream.Collectors;
 @Api(tags = "文章管理接口")
 public class AritcleController {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(AritcleController.class);
+
     @Autowired
     private ArticleService articleService;
 
@@ -41,6 +47,9 @@ public class AritcleController {
 
     @Autowired
     private EsArticleService esArticleService;
+
+    @Autowired
+    private UserReadHistoryService userReadHistoryService;
 
     /**
      * @param pageSize    每一页的数据条数，默认5条
@@ -108,7 +117,16 @@ public class AritcleController {
     @ApiImplicitParam(name = "id", value = "文章id")
     public ArticleDetailVo getArticleDetail(@PathVariable("id") Long id) {
         articleService.updateViewCount(id);
-        return articleService.getArticleDetail(id);
+        ArticleDetailVo articleDetail = articleService.getArticleDetail(id);
+        // 添加历史记录
+        try {
+            User currentUser = userService.getCurrentUser();
+            UserReadHistory userReadHistory = new UserReadHistory(currentUser, articleDetail);
+            userReadHistoryService.create(userReadHistory);
+        } catch (Exception e){
+            LOGGER.info("用户未登录，不需要添加历史记录");
+        }
+        return articleDetail;
     }
 
     @GetMapping("/searchTag")
